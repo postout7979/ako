@@ -16,7 +16,7 @@ GatewayAPI:
     pullPolicy: IfNotPresent
 
 AKOSettings:
-  primaryInstance: 'true'
+  primaryInstance: 'false'
   enableEvents: 'true'
   logLevel: WARN # enum: INFO|DEBUG|WARN|ERROR
   fullSyncFrequency: '1800'
