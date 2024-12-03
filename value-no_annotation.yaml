@@ -1,0 +1,114 @@
+featureGates:
+  GatewayAPI: false
+
+replicaCount: 1
+
+image:
+  repository: projects.registry.vmware.com/ako/ako
+  pullPolicy: IfNotPresent
+  pullSecrets: [] 
+  #pullSecrets:
+  # - name: regcred
+
+GatewayAPI:
+  image:
+    repository: projects.registry.vmware.com/ako/ako-gateway-api
+    pullPolicy: IfNotPresent
+
+AKOSettings:
+  primaryInstance: 'true'
+  enableEvents: 'true'
+  logLevel: WARN # enum: INFO|DEBUG|WARN|ERROR
+  fullSyncFrequency: '1800'
+  apiServerPort: '8080'
+  deleteConfig: 'false'
+  disableStaticRouteSync: 'false'
+  clusterName: tkc01
+  cniPlugin: ''
+  enableEVH: 'false'
+  layer7Only: 'false'
+
+  namespaceSelector:
+    labelKey: ''
+    labelValue: ''
+  servicesAPI: 'false'
+
+  vipPerNamespace: 'false'
+  istioEnabled: false
+
+  blockedNamespaceList: []
+  # blockedNamespaceList:
+  #   - kube-system
+  #   - kube-public
+  ipFamily: 'V4'
+  useDefaultSecretsOnly: 'false'
+
+NetworkSettings:
+#  nodeNetworkList:
+#  - networkName: 'avi-data'
+#     networkUUID: "net-4567"
+#    cidrs:
+#    - '192.168.249.0/24'
+  enableRHI: false
+    #  nsxtT1LR: "Tanzu-T1"
+  # bgpPeerLabels: []
+  # bgpPeerLabels:
+  #   - peer1
+  #   - peer2
+
+  vipNetworkList:
+  - networkName: 'avi-frontend'
+  #    networkUUID: net-1234
+    cidr: '192.168.246.0/24'
+  #    v6cidr: 2002::1234:abcd:ffff:c0a8:101/64
+
+
+L7Settings:
+  defaultIngController: 'false'
+  noPGForSNI: false
+  serviceType: NodePort
+  shardVSSize: LARGE
+  passthroughShardSize: SMALL
+  enableMCI: 'false'
+
+L4Settings:
+  defaultDomain: 'tanzu'
+  autoFQDN: default   # ENUM: default(<svc>.<ns>.<subdomain>), flat (<svc>-<ns>.<subdomain>), "disabled" If the value is disabled then the FQDN generation is disabled.
+
+ControllerSettings:
+  serviceEngineGroupName: 'Default-Group'
+  controllerVersion: '22.1.7'
+  cloudName: 'Default-Cloud'
+  controllerHost: '172.18.10.192'
+  tenantName: admin
+
+nodePortSelector:
+  key: ''
+  value: ''
+
+resources:
+  limits:
+    cpu: 350m
+    memory: 400Mi
+  requests:
+    cpu: 200m
+    memory: 300Mi
+
+securityContext: {}
+
+podSecurityContext: {}
+
+rbac:
+  # Creates the pod security policy if set to true
+  pspEnable: false
+
+avicredentials:
+  username: 'admin'
+  password: 'VMware1!'
+# authtoken:
+# certificateAuthorityData:
+
+persistentVolumeClaim: ''
+mountPath: /log
+logFile: avi.log
+akoGatewayLogFile: avi-gw.log
